@@ -8,13 +8,11 @@ using System.Web.Configuration;
 
 namespace Äventyrliga_kontakter.Model.DAL
 {
-    public class ContactDAL
+    public class ContactDAL : DALBase
     {
         public IEnumerable<Contact> GetContacts()
         {
-            string connectionString = WebConfigurationManager.ConnectionStrings["1dv406_AdventureWorksAssignmentConnectionString"].ConnectionString;
-
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = CreateConnection())
             {
                 try
                 {
