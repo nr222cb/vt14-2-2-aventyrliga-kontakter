@@ -26,5 +26,42 @@ namespace Äventyrliga_kontakter
         {
             return Service.GetContacts();
         }
+
+        public void ContactListView_InsertItem(Contact contact)
+        {
+            try
+            {
+                Service.SaveContact(contact);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle läggas till.");
+            }
+        }
+
+        // The id parameter name should match the DataKeyNames value set on the control
+        public void ContactListView_UpdateItem(int id)
+        {
+            Äventyrliga_kontakter.Model.Contact item = null;
+            // Load the item here, e.g. item = MyDataLayer.Find(id);
+            if (item == null)
+            {
+                // The item wasn't found
+                ModelState.AddModelError("", String.Format("Item with id {0} was not found", id));
+                return;
+            }
+            TryUpdateModel(item);
+            if (ModelState.IsValid)
+            {
+                // Save changes here, e.g. MyDataLayer.SaveChanges();
+
+            }
+        }
+
+        // The id parameter name should match the DataKeyNames value set on the control
+        public void ContactListView_DeleteItem(int id)
+        {
+
+        }
     }
 }

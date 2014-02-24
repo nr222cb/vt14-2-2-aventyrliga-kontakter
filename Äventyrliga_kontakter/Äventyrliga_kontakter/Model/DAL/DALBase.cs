@@ -11,7 +11,7 @@ namespace Äventyrliga_kontakter.Model.DAL
     {
         private static string _connectionString;
 
-        private static DALBase()
+        static DALBase()
         {
             _connectionString = WebConfigurationManager.ConnectionStrings["1dv406_AdventureWorksAssignmentConnectionString"].ConnectionString;
         }

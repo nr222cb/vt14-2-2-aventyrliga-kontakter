@@ -20,5 +20,29 @@ namespace Äventyrliga_kontakter.Model
             return ContactDAL.GetContacts();
         }
 
+        public Contact GetContact(int contactId)
+        {
+            return ContactDAL.GetContactById(contactId);
+
+        }
+
+        public void DeleteContact(int contactId)
+        {
+            ContactDAL.DeleteContact(contactId);
+        }
+
+        public void SaveContact(Contact contact)
+        {
+            // Om det inte finns ContactId / Primärnyckel i db kör insert annars update
+            if (contact.ContactId == 0)
+            {
+                ContactDAL.InsertContact(contact);
+            }
+            else
+            {
+                ContactDAL.UpdateContact(contact);
+            }
+        }
+
     }
 }
