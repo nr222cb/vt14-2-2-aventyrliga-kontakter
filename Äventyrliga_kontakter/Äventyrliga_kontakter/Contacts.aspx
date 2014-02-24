@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Äventyrliga kontakter</title>
-    <link rel="stylesheet" href="Content/StyleSheet.css"/>
+    <link rel="stylesheet" href="Content/StyleSheet.css" />
 </head>
 <body>
     <h1>Äventyrliga kontakter</h1>
@@ -23,20 +23,27 @@
                 <LayoutTemplate>
                     <table>
                         <thead>
-                        <tr>
-                            <th>Förnamn
-                            </th>
-                            <th>Efternamn
-                            </th>
-                            <th>Epost
-                            </th>
-                             <th>Åtgärd
-                            </th>
-                        </tr>
+                            <tr>
+                                <th>Förnamn
+                                </th>
+                                <th>Efternamn
+                                </th>
+                                <th>Epost
+                                </th>
+                                <th>Åtgärd
+                                </th>
+                            </tr>
                         </thead>
                         <%-- Platshållare för nya rader --%>
                         <asp:PlaceHolder ID="itemPlaceholder" runat="server" />
                     </table>
+                    <asp:DataPager ID="DataPager" runat="server" PageSize="20">
+                        <Fields>
+                            <asp:NextPreviousPagerField ShowFirstPageButton="True" ShowLastPageButton="True" FirstPageText="Första" LastPageText="Sista" NextPageText="Nästa" PreviousPageText="Förra" ButtonType="Button" />
+                            <asp:NumericPagerField />
+                        </Fields>
+                    </asp:DataPager>
+
                 </LayoutTemplate>
                 <ItemTemplate>
                     <%-- Mall för nya rader. --%>
@@ -67,7 +74,7 @@
                         <td>
                             <asp:Label ID="PostalCodeLabel" runat="server" Text='<%#: Item.EmailAddress %>' />
                         </td>
-                         <td>
+                        <td>
                             <asp:LinkButton runat="server" CausesValidation="false" CommandName="Delete" Text="Radera"></asp:LinkButton>
                             <asp:LinkButton runat="server" CausesValidation="false" CommandName="Edit" Text="Redigera"></asp:LinkButton>
                         </td>
@@ -98,6 +105,24 @@
                         </td>
                     </tr>
                 </InsertItemTemplate>
+                <EditItemTemplate>
+                    <tr>
+                        <td>
+                            <asp:TextBox ID="FirstName" runat="server" Text='<%# BindItem.FirstName %>'></asp:TextBox>
+                        </td>
+                        <td>
+                            <asp:TextBox ID="LastName" runat="server" Text='<%# BindItem.LastName %>'></asp:TextBox>
+                        </td>
+                        <td>
+                            <asp:TextBox ID="EmailAddress" runat="server" Text='<%# BindItem.EmailAddress %>'></asp:TextBox>
+                        </td>
+                        <td>
+                            <%-- Knappar för uppdatera en kontaktuppgift och avbryta. --%>
+                            <asp:LinkButton runat="server" CommandName="Update" Text="Spara"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CommandName="Cancel" Text="Ångra" CausesValidation="false"></asp:LinkButton>
+                        </td>
+                    </tr>
+                </EditItemTemplate>
             </asp:ListView>
         </div>
     </form>

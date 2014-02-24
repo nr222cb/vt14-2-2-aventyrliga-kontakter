@@ -44,5 +44,11 @@ namespace Äventyrliga_kontakter.Model
             }
         }
 
+        public IEnumerable<Contact> GetContactsPageWise(int maximumRows, int startRowIndex, out int totalRowCount)
+        {
+            return ContactDAL.GetContactsPageWise(maximumRows, startRowIndex, out totalRowCount);
+        }
+
+
     }
 }
