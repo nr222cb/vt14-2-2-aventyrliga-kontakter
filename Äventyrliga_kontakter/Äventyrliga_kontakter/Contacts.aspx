@@ -30,6 +30,8 @@
                             </th>
                             <th>Epost
                             </th>
+                             <th>Åtgärd
+                            </th>
                         </tr>
                         </thead>
                         <%-- Platshållare för nya rader --%>
@@ -48,6 +50,10 @@
                         <td>
                             <asp:Label ID="PostalCodeLabel" runat="server" Text='<%#: Item.EmailAddress %>' />
                         </td>
+                        <td>
+                            <asp:LinkButton runat="server" CausesValidation="false" CommandName="Delete" Text="Radera"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CausesValidation="false" CommandName="Edit" Text="Redigera"></asp:LinkButton>
+                        </td>
                     </tr>
                 </ItemTemplate>
                 <AlternatingItemTemplate>
@@ -60,6 +66,10 @@
                         </td>
                         <td>
                             <asp:Label ID="PostalCodeLabel" runat="server" Text='<%#: Item.EmailAddress %>' />
+                        </td>
+                         <td>
+                            <asp:LinkButton runat="server" CausesValidation="false" CommandName="Delete" Text="Radera"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CausesValidation="false" CommandName="Edit" Text="Redigera"></asp:LinkButton>
                         </td>
                     </tr>
                 </AlternatingItemTemplate>

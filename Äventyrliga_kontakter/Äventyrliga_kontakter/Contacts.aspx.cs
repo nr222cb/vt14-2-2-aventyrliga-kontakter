@@ -31,7 +31,11 @@ namespace Äventyrliga_kontakter
         {
             try
             {
-                Service.SaveContact(contact);
+                TryUpdateModel(contact);
+                if (ModelState.IsValid)
+                {
+                    Service.SaveContact(contact);
+                }
             }
             catch (Exception)
             {
@@ -40,28 +44,40 @@ namespace Äventyrliga_kontakter
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
-        public void ContactListView_UpdateItem(int id)
+        public void ContactListView_UpdateItem(int contactId)
         {
-            Äventyrliga_kontakter.Model.Contact item = null;
-            // Load the item here, e.g. item = MyDataLayer.Find(id);
-            if (item == null)
+            try
             {
-                // The item wasn't found
-                ModelState.AddModelError("", String.Format("Item with id {0} was not found", id));
-                return;
+                var contact = Service.GetContact(contactId);
+                if (contact == null)
+                {
+                    // The item wasn't found
+                    ModelState.AddModelError("", String.Format("Kontakten med kontaktnummer {0} hittades inte.", contactId));
+                    return;
+                }
+                TryUpdateModel(contact);
+                if (ModelState.IsValid)
+                {
+                    Service.SaveContact(contact);
+                }
             }
-            TryUpdateModel(item);
-            if (ModelState.IsValid)
+            catch (Exception)
             {
-                // Save changes here, e.g. MyDataLayer.SaveChanges();
-
+                ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle uppdateras.");
             }
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
-        public void ContactListView_DeleteItem(int id)
+        public void ContactListView_DeleteItem(int contactId)
         {
-
+            try
+            {
+                Service.DeleteContact(contactId);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle tas bort.");
+            }
         }
     }
 }
