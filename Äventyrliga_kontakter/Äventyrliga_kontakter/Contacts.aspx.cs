@@ -19,7 +19,29 @@ namespace Äventyrliga_kontakter
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (HasMessage)
+            {
+                Literal1.Visible = true;
+                Literal1.Text = Message;
+            }
+        }
 
+        // sessionsvariabel för felmeddelande
+        public string Message
+        {
+            get
+            {
+                var message = Session["message"] as string;
+                Session.Remove("message");
+                return message;
+            }
+
+            set { Session["message"] = value; }
+        }
+
+        private bool HasMessage
+        {
+            get { return Session["message"] != null; }
         }
 
         public IEnumerable<Äventyrliga_kontakter.Model.Contact> ContactListView_GetData(int maximumRows, int startRowIndex, out int totalRowCount)
@@ -29,41 +51,49 @@ namespace Äventyrliga_kontakter
 
         public void ContactListView_InsertItem(Contact contact)
         {
-            try
+            if (IsValid)
             {
-                TryUpdateModel(contact);
-                if (ModelState.IsValid)
+                try
                 {
-                    Service.SaveContact(contact);
+                    TryUpdateModel(contact);
+                    if (ModelState.IsValid)
+                    {
+                        Service.SaveContact(contact);
+                        Message = String.Format("Kontakten {0} {1} har sparats.", contact.FirstName, contact.LastName);
+                        Response.Redirect(Request.Path);
+                    }
                 }
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle läggas till.");
+                catch (Exception)
+                {
+                    ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle läggas till.");
+                }
             }
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
         public void ContactListView_UpdateItem(int contactId)
         {
-            try
+            if (IsValid)
             {
-                var contact = Service.GetContact(contactId);
-                if (contact == null)
+                try
                 {
-                    // The item wasn't found
-                    ModelState.AddModelError("", String.Format("Kontakten med kontaktnummer {0} hittades inte.", contactId));
-                    return;
+                    var contact = Service.GetContact(contactId);
+                    if (contact == null)
+                    {
+                        // The item wasn't found
+                        ModelState.AddModelError("", String.Format("Kontakten med kontaktnummer {0} hittades inte.", contactId));
+                        return;
+                    }
+                    TryUpdateModel(contact);
+                    if (ModelState.IsValid)
+                    {
+                        Service.SaveContact(contact);
+                    }
                 }
-                TryUpdateModel(contact);
-                if (ModelState.IsValid)
+                catch (Exception)
                 {
-                    Service.SaveContact(contact);
+                    ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle uppdateras.");
                 }
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle uppdateras.");
             }
         }
 

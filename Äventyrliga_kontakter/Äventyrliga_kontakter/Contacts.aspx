@@ -11,7 +11,10 @@
     <h1>Äventyrliga kontakter</h1>
     <form id="form1" runat="server">
         <div class="datagrid">
-            <asp:ValidationSummary ID="ValidationSummary" runat="server" HeaderText="Fel inträffade. Korrigera det som är fel och försök igen." />
+            <asp:Literal ID="Literal1" runat="server" Visible="false"></asp:Literal>
+            <asp:ValidationSummary ID="ValidationSummary" runat="server" HeaderText="Fel inträffade. Korrigera det som är fel och försök igen." ValidationGroup="Edit" />
+            <asp:ValidationSummary ID="ValidationSummary1" runat="server" HeaderText="Fel inträffade. Korrigera det som är fel och försök igen." ValidationGroup="Insert" />
+            <asp:ValidationSummary ID="ValidationSummary2" runat="server" HeaderText="Fel inträffade. Korrigera det som är fel och försök igen." />
             <asp:ListView ID="ContactListView" runat="server"
                 ItemType="Äventyrliga_kontakter.Model.Contact"
                 SelectMethod="ContactListView_GetData"
@@ -91,16 +94,20 @@
                      har värdet FirstItemPosition eller LasItemPosition.--%>
                     <tr>
                         <td>
-                            <asp:TextBox ID="FirstName" runat="server" Text='<%# BindItem.FirstName %>'></asp:TextBox>
+                            <asp:TextBox ID="FirstName" runat="server" Text='<%# BindItem.FirstName %>' MaxLength="50" CausesValidation="True" ValidationGroup="Insert"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Förnamn måste anges." ControlToValidate="FirstName" Text="*" Display="Dynamic" SetFocusOnError="True" ValidationGroup="Insert"></asp:RequiredFieldValidator>
                         </td>
                         <td>
-                            <asp:TextBox ID="LastName" runat="server" Text='<%# BindItem.LastName %>'></asp:TextBox>
+                            <asp:TextBox ID="LastName" runat="server" Text='<%# BindItem.LastName %>' MaxLength="50" CausesValidation="True" ValidationGroup="Insert"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Efternamn måste anges." ControlToValidate="LastName" Font-Bold="False" Display="Dynamic" SetFocusOnError="True" Text="*" ValidationGroup="Insert"></asp:RequiredFieldValidator>
                         </td>
                         <td>
-                            <asp:TextBox ID="EmailAddress" runat="server" Text='<%# BindItem.EmailAddress %>'></asp:TextBox>
+                            <asp:TextBox ID="EmailAddress" runat="server" Text='<%# BindItem.EmailAddress %>' MaxLength="50" CausesValidation="True" ValidationGroup="Insert"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="Epost måste anges." ControlToValidate="EmailAddress" Display="Dynamic" Text="*" ValidationGroup="Insert"></asp:RequiredFieldValidator>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Giltig epost måste anges." ValidationExpression="^[^@]+@[^@]+\.[^@\.]{2,}$" SetFocusOnError="True" ControlToValidate="EmailAddress" Display="Dynamic" EnableClientScript="True" Text="*" ValidationGroup="Insert"></asp:RegularExpressionValidator>
                         </td>
                         <td>
-                            <asp:LinkButton runat="server" CommandName="Insert" Text="Lägg till"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CommandName="Insert" Text="Lägg till" ValidationGroup="Insert"></asp:LinkButton>
                             <asp:LinkButton runat="server" CausesValidation="false" CommandName="Cancel" Text="Rensa"></asp:LinkButton>
                         </td>
                     </tr>
@@ -108,17 +115,21 @@
                 <EditItemTemplate>
                     <tr>
                         <td>
-                            <asp:TextBox ID="FirstName" runat="server" Text='<%# BindItem.FirstName %>'></asp:TextBox>
+                            <asp:TextBox ID="FirstNameEdit" runat="server" Text='<%# BindItem.FirstName %>' ValidationGroup="Edit"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="Förnamn måste anges." ControlToValidate="FirstNameEdit" Text="*" Display="Dynamic" SetFocusOnError="True" ValidationGroup="Edit"></asp:RequiredFieldValidator>                        
                         </td>
                         <td>
-                            <asp:TextBox ID="LastName" runat="server" Text='<%# BindItem.LastName %>'></asp:TextBox>
+                            <asp:TextBox ID="LastNameEdit" runat="server" Text='<%# BindItem.LastName %>'></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="Efternamn måste anges." ControlToValidate="LastNameEdit" Font-Bold="False" Display="Dynamic" SetFocusOnError="True" Text="*" ValidationGroup="Edit"></asp:RequiredFieldValidator>
                         </td>
                         <td>
-                            <asp:TextBox ID="EmailAddress" runat="server" Text='<%# BindItem.EmailAddress %>'></asp:TextBox>
+                            <asp:TextBox ID="EmailAddressEdit" runat="server" Text='<%# BindItem.EmailAddress %>'></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ErrorMessage="Epost måste anges." ControlToValidate="EmailAddressEdit" Display="Dynamic" Text="*" ValidationGroup="Edit"></asp:RequiredFieldValidator>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ErrorMessage="Giltig epost måste anges." ValidationExpression="^[^@]+@[^@]+\.[^@\.]{2,}$" SetFocusOnError="True" ControlToValidate="EmailAddressEdit" Display="Dynamic" EnableClientScript="True" Text="*" ValidationGroup="Edit"></asp:RegularExpressionValidator>                        
                         </td>
                         <td>
                             <%-- Knappar för uppdatera en kontaktuppgift och avbryta. --%>
-                            <asp:LinkButton runat="server" CommandName="Update" Text="Spara"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CommandName="Update" Text="Spara" ValidationGroup="Edit"></asp:LinkButton>
                             <asp:LinkButton runat="server" CommandName="Cancel" Text="Ångra" CausesValidation="false"></asp:LinkButton>
                         </td>
                     </tr>

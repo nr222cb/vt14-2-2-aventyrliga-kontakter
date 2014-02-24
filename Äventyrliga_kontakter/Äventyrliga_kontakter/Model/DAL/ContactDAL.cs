@@ -214,6 +214,7 @@ namespace Äventyrliga_kontakter.Model.DAL
                     }
                     totalRowCount = (int)cmd.Parameters["@RecordCount"].Value;
                     contacts.TrimExcess();
+                    // var sortedContacts = contacts.OrderBy(c => c.FirstName);
                     return contacts;
                 }
             }
