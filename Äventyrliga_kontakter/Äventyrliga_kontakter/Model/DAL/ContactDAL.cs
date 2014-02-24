@@ -177,51 +177,5 @@ namespace Äventyrliga_kontakter.Model.DAL
             }
         }
 
-        public IEnumerable<Contact> GetContactsPageWise(int maximumRows, int startRowIndex, out int totalRowCount)
-        {
-            try
-            {
-                var contacts = new List<Contact>(100);
-
-                using (var conn = CreateConnection())
-                {
-                    SqlCommand cmd = new SqlCommand("Person.uspGetContactsPageWise", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.Add("@PageIndex", SqlDbType.Int, 4).Value = startRowIndex / maximumRows + 1;
-                    cmd.Parameters.Add("@PageSize", SqlDbType.Int, 4).Value = maximumRows;
-                    cmd.Parameters.Add("@RecordCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
-
-                    conn.Open();
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        var contactIdIndex = reader.GetOrdinal("ContactId");
-                        var firstNameIndex = reader.GetOrdinal("FirstName");
-                        var lastNameIndex = reader.GetOrdinal("LastName");
-                        var emailIndex = reader.GetOrdinal("EmailAddress");
-
-
-                        while (reader.Read())
-                        {
-                            contacts.Add(new Contact
-                            {
-                                FirstName = reader.GetString(firstNameIndex),
-                                LastName = reader.GetString(lastNameIndex),
-                                EmailAddress = reader.GetString(emailIndex),
-                            });
-                        }
-                    }
-                    totalRowCount = (int)cmd.Parameters["@RecordCount"].Value;
-                    contacts.TrimExcess();
-                    return contacts;
-                }
-            }
-            catch (Exception)
-            {
-
-                throw new ApplicationException("An error occured while getting contacts from the database.");
-            }
-        }
-
     }
 }

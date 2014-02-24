@@ -37,12 +37,6 @@
                         <%-- Platshållare för nya rader --%>
                         <asp:PlaceHolder ID="itemPlaceholder" runat="server" />
                     </table>
-                    <asp:DataPager ID="DataPager" runat="server" PageSize="20" >
-                       <Fields>
-                           <asp:NextPreviousPagerField ShowFirstPageButton="True" ShowLastPageButton="True" FirstPageText="Första" LastPageText="Sista" NextPageText="Nästa" PreviousPageText="Förra" ButtonType="Button" />
-                           <asp:NumericPagerField />
-                       </Fields>
-                    </asp:DataPager>
                 </LayoutTemplate>
                 <ItemTemplate>
                     <%-- Mall för nya rader. --%>
@@ -104,24 +98,6 @@
                         </td>
                     </tr>
                 </InsertItemTemplate>
-                <EditItemTemplate>
-                     <tr>
-                        <td>
-                            <asp:TextBox ID="FirstName" runat="server" Text='<%# BindItem.FirstName %>'></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:TextBox ID="LastName" runat="server" Text='<%# BindItem.LastName %>'></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:TextBox ID="EmailAddress" runat="server" Text='<%# BindItem.EmailAddress %>'></asp:TextBox>
-                        </td>
-                        <td>
-                            <%-- Knappar för uppdatera en kontaktuppgift och avbryta. --%>
-                            <asp:LinkButton runat="server" CommandName="Update" Text="Spara"></asp:LinkButton>
-                            <asp:LinkButton runat="server" CommandName="Cancel" Text="Ångra" CausesValidation="false"></asp:LinkButton>
-                        </td>
-                    </tr>
-                </EditItemTemplate>
             </asp:ListView>
         </div>
     </form>
