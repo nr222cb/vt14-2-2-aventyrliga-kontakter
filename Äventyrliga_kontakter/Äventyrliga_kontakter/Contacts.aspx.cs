@@ -22,9 +22,9 @@ namespace Äventyrliga_kontakter
 
         }
 
-        public IEnumerable<Äventyrliga_kontakter.Model.Contact> ContactListView_GetData()
+        public IEnumerable<Contact> ContactListView_GetData(int maximumRows, int startRowIndex, out int totalRowCount)
         {
-            return Service.GetContacts();
+            return Service.GetContactsPageWise(maximumRows, startRowIndex, out totalRowCount);
         }
 
         public void ContactListView_InsertItem(Contact contact)
