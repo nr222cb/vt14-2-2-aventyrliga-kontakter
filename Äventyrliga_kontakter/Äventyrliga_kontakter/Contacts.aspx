@@ -11,10 +11,11 @@
     <h1>Äventyrliga kontakter</h1>
     <form id="form1" runat="server">
         <div class="datagrid">
-            <asp:Literal ID="Literal1" runat="server" Visible="false"></asp:Literal>
-            <asp:ValidationSummary ID="ValidationSummary" runat="server" HeaderText="Fel inträffade. Korrigera det som är fel och försök igen." ValidationGroup="Edit" />
-            <asp:ValidationSummary ID="ValidationSummary1" runat="server" HeaderText="Fel inträffade. Korrigera det som är fel och försök igen." ValidationGroup="Insert" />
-            <asp:ValidationSummary ID="ValidationSummary2" runat="server" HeaderText="Fel inträffade. Korrigera det som är fel och försök igen." />
+            <asp:Panel runat="server" ID="MessagePanel" Visible="false" CssClass="green">
+                <asp:Literal runat="server" ID="MessageLiteral" />
+            </asp:Panel>
+            <asp:ValidationSummary ID="ValidationSummary" runat="server" HeaderText="Fel inträffade. Korrigera det som är fel och försök igen." ValidationGroup="Edit" CssClass="red" />
+            <asp:ValidationSummary ID="ValidationSummary1" runat="server" HeaderText="Fel inträffade. Korrigera det som är fel och försök igen." ValidationGroup="Insert" CssClass="red" />
             <asp:ListView ID="ContactListView" runat="server"
                 ItemType="Äventyrliga_kontakter.Model.Contact"
                 SelectMethod="ContactListView_GetData"
@@ -61,7 +62,8 @@
                             <asp:Label ID="PostalCodeLabel" runat="server" Text='<%#: Item.EmailAddress %>' />
                         </td>
                         <td>
-                            <asp:LinkButton runat="server" CausesValidation="false" CommandName="Delete" Text="Radera"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CausesValidation="false" CommandName="Delete" Text="Radera" 
+                                OnClientClick="return confirm('Är du säker på att du vill ta bort denna post?');"></asp:LinkButton>
                             <asp:LinkButton runat="server" CausesValidation="false" CommandName="Edit" Text="Redigera"></asp:LinkButton>
                         </td>
                     </tr>
@@ -78,7 +80,8 @@
                             <asp:Label ID="PostalCodeLabel" runat="server" Text='<%#: Item.EmailAddress %>' />
                         </td>
                         <td>
-                            <asp:LinkButton runat="server" CausesValidation="false" CommandName="Delete" Text="Radera"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CausesValidation="false" CommandName="Delete" Text="Radera"
+                                OnClientClick="return confirm('Är du säker på att du vill ta bort denna post?');"></asp:LinkButton>
                             <asp:LinkButton runat="server" CausesValidation="false" CommandName="Edit" Text="Redigera"></asp:LinkButton>
                         </td>
                     </tr>

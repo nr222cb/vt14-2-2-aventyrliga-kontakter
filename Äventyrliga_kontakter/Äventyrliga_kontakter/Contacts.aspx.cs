@@ -19,29 +19,8 @@ namespace Äventyrliga_kontakter
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (HasMessage)
-            {
-                Literal1.Visible = true;
-                Literal1.Text = Message;
-            }
-        }
-
-        // sessionsvariabel för felmeddelande
-        public string Message
-        {
-            get
-            {
-                var message = Session["message"] as string;
-                Session.Remove("message");
-                return message;
-            }
-
-            set { Session["message"] = value; }
-        }
-
-        private bool HasMessage
-        {
-            get { return Session["message"] != null; }
+            MessageLiteral.Text = Page.GetTempData("Message") as string;
+            MessagePanel.Visible = !String.IsNullOrWhiteSpace(MessageLiteral.Text);
         }
 
         public IEnumerable<Äventyrliga_kontakter.Model.Contact> ContactListView_GetData(int maximumRows, int startRowIndex, out int totalRowCount)
@@ -59,7 +38,7 @@ namespace Äventyrliga_kontakter
                     if (ModelState.IsValid)
                     {
                         Service.SaveContact(contact);
-                        Message = String.Format("Kontakten {0} {1} har sparats.", contact.FirstName, contact.LastName);
+                        Page.SetTempData("Message", String.Format("Kontakten {0} {1} har sparats.", contact.FirstName, contact.LastName));
                         Response.Redirect(Request.Path);
                     }
                 }
@@ -88,6 +67,8 @@ namespace Äventyrliga_kontakter
                     if (ModelState.IsValid)
                     {
                         Service.SaveContact(contact);
+                        Page.SetTempData("Message", String.Format("Kontakten {0} {1} har uppdaterats.", contact.FirstName, contact.LastName));
+                        Response.Redirect(Request.Path);
                     }
                 }
                 catch (Exception)
@@ -103,6 +84,8 @@ namespace Äventyrliga_kontakter
             try
             {
                 Service.DeleteContact(contactId);
+                Page.SetTempData("Message", String.Format("Kontakten har tagits bort."));
+                Response.Redirect(Request.Path);
             }
             catch (Exception)
             {
